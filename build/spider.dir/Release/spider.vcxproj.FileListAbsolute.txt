@@ -1,6 +1,0 @@
-C:\Users\Andrew\Desktop\Spider_копия\build\Release\pqxx.dll
-C:\Users\Andrew\Desktop\Spider_копия\build\Release\LIBPQ.dll
-C:\Users\Andrew\Desktop\Spider_копия\build\Release\libssl-3-x64.dll
-C:\Users\Andrew\Desktop\Spider_копия\build\Release\libcrypto-3-x64.dll
-C:\Users\Andrew\Desktop\Spider_копия\build\Release\boost_locale-vc143-mt-x64-1_88.dll
-C:\Users\Andrew\Desktop\Spider_копия\build\spider.dir\Release\spider.vcxproj.Up2Date
