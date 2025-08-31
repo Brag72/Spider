@@ -1,0 +1,5 @@
+C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-src\libs\thread\src\win32\thread.cpp;C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-build\libs\thread\boost_thread.dir\Release\thread.obj
+C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-src\libs\thread\src\win32\tss_dll.cpp;C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-build\libs\thread\boost_thread.dir\Release\tss_dll.obj
+C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-src\libs\thread\src\win32\tss_pe.cpp;C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-build\libs\thread\boost_thread.dir\Release\tss_pe.obj
+C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-src\libs\thread\src\win32\thread_primitives.cpp;C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-build\libs\thread\boost_thread.dir\Release\thread_primitives.obj
+C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-src\libs\thread\src\future.cpp;C:\Users\Andrew\Desktop\Spider_копия\build\_deps\boost-build\libs\thread\boost_thread.dir\Release\future.obj

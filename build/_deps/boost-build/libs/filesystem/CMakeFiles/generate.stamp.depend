@@ -1,0 +1,5 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.1/Modules/CheckCXXSourceCompiles.cmake
+C:/Users/Andrew/Desktop/Spider_копия/build/CMakeFiles/cmake.verify_globs
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/libs/filesystem/CMakeLists.txt
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/libs/filesystem/cmake/BoostLibraryIncludes.cmake

@@ -1,0 +1,9 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.1/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-4.1/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-4.1/Modules/WriteBasicConfigVersionFile.cmake
+C:/Users/Andrew/Desktop/Spider_копия/build/CMakeFiles/cmake.verify_globs
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/CMakeLists.txt
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/tools/cmake/include/BoostInstall.cmake
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/tools/cmake/include/BoostMessage.cmake
+C:/Users/Andrew/Desktop/Spider_копия/build/_deps/boost-src/tools/cmake/include/BoostRoot.cmake
