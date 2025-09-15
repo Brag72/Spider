@@ -91,16 +91,29 @@ size_t UrlQueue::getPendingCount() const {
 }
 
 std::string UrlQueue::normalizeUrl(const std::string& url) const {
-    std::string normalized = url;
-    
-    // Remove trailing slash
-    if (normalized.length() > 1 && normalized.back() == '/') {
-        normalized.pop_back();
+    std::string Normalized = url;
+    if (Normalized.length() > 1 && Normalized.back() == '/')
+    {
+        Normalized.pop_back();
     }
-    
-    // Convert to lowercase (for the scheme and host parts)
-    // In a real implementation, you'd want more sophisticated URL normalization
-    std::transform(normalized.begin(), normalized.end(), normalized.begin(), ::tolower);
-    
-    return normalized;
+
+    size_t PathStartPose = Normalized.find("://");
+    if (PathStartPose != std::string::npos)
+    {
+        PathStartPose = Normalized.find('/', PathStartPose + 3);
+    }
+    else
+    {
+        return Normalized;
+    }
+
+    if (PathStartPose == std::string::npos)
+    {
+        std::transform(Normalized.begin(), Normalized.end(), Normalized.begin(), [](unsigned char C) { return std::tolower(C); });
+    }
+    else
+    {
+        std::transform(Normalized.begin(), Normalized.begin() + PathStartPose, Normalized.begin(), [](unsigned char C) { return std::tolower(C); });
+    }
+    return Normalized;
 }

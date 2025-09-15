@@ -30,3 +30,5 @@
 *.exe
 *.out
 *.app
+.vs/slnx.sqlite
+.vs/slnx.sqlite-journal

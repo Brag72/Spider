@@ -22,6 +22,7 @@ struct HttpResponse {
     std::string content_type;
     bool success;
     std::string error_message;
+    std::string redirect_location;
 };
 
 class HttpClient {
@@ -54,6 +55,7 @@ private:
     UrlParts parseUrl(const std::string& url);
     HttpResponse performHttpRequest(const UrlParts& url_parts);
     HttpResponse performHttpsRequest(const UrlParts& url_parts);
+    std::string resolveUrl(const std::string& baseUrl, const std::string& relativeUrl);
     
     template<typename Stream>
     HttpResponse executeRequest(Stream& stream, const UrlParts& url_parts);

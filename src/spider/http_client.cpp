@@ -19,25 +19,63 @@ HttpClient::~HttpClient() {
 HttpResponse HttpClient::get(const std::string& url) {
     HttpResponse response;
     response.success = false;
-    
-    try {
-        UrlParts url_parts = parseUrl(url);
-        
-        if (url_parts.scheme.empty() || url_parts.host.empty()) {
-            response.error_message = "Invalid URL format";
+
+    std::string currentUrl = url;
+    const int MAX_REDIRECTS = 5;
+
+    for (int i = 0; i < MAX_REDIRECTS; ++i)
+    {
+        try
+        {
+            UrlParts Parts = parseUrl(currentUrl);
+            if (Parts.scheme.empty() || Parts.host.empty())
+            {
+                response.error_message = "Invalid URL format: " + currentUrl;
+                response.success = false;
+
+                return response;
+            }
+
+            if (Parts.is_https)
+            {
+                response = performHttpsRequest(Parts);
+            }
+            else
+            {
+                response = performHttpRequest(Parts);
+            }
+
+            if (response.success || response.status_code < 300 || response.status_code >= 400)
+            {
+                break;
+            }
+
+            if (!response.redirect_location.empty())
+            {
+                std::string prevUrl = currentUrl;
+                currentUrl = resolveUrl(prevUrl, response.redirect_location);
+            }
+            else
+            {
+                response.error_message = "Redirect response with no location header.";
+                response.success = false;
+                break;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            response.error_message = std::string("HTTP request failed: ") + e.what();
+            response.success = false;
             return response;
-        }
-        
-        if (url_parts.is_https) {
-            response = performHttpsRequest(url_parts);
-        } else {
-            response = performHttpRequest(url_parts);
-        }
-        
-    } catch (const std::exception& e) {
-        response.error_message = std::string("HTTP request failed: ") + e.what();
+        } 
     }
-    
+
+    if (response.status_code >= 300 && response.status_code < 400)
+    {
+        response.error_message = "Too many redirects.";
+        response.success = false;
+    }
+
     return response;
 }
 
@@ -113,6 +151,50 @@ HttpResponse HttpClient::performHttpsRequest(const UrlParts& url_parts) {
     return executeRequest(stream, url_parts);
 }
 
+std::string HttpClient::resolveUrl(const std::string& baseUrl, const std::string& relativeUrl)
+{
+    if (relativeUrl.rfind("http://", 0) == 0 || relativeUrl.rfind("https://", 0) == 0)
+    {
+        return relativeUrl;
+    }
+    size_t protocolEnd = baseUrl.find("://");
+    
+    if (protocolEnd == std::string::npos)
+    {
+        return relativeUrl;
+    }
+
+    if (!relativeUrl.empty() && relativeUrl[0] == '/')
+    {
+        size_t domainEnd = baseUrl.find('/', protocolEnd + 3);
+
+        if (domainEnd != std::string::npos)
+        {
+            return baseUrl.substr(0, domainEnd) + relativeUrl;
+        }
+        else
+        {
+            return baseUrl + relativeUrl;
+        }
+    }
+
+    std::string base = baseUrl;
+    size_t lastSlash = base.rfind('/');
+
+    if (lastSlash > protocolEnd + 2)
+    {
+        base = base.substr(0, lastSlash + 1);
+    }
+    else
+    {
+        if (base.back() != '/')
+        {
+            base += '/';
+        }
+    }
+    return base + relativeUrl;
+}
+
 template<typename Stream>
 HttpResponse HttpClient::executeRequest(Stream& stream, const UrlParts& url_parts) {
     HttpResponse response;
@@ -150,9 +232,7 @@ HttpResponse HttpClient::executeRequest(Stream& stream, const UrlParts& url_part
     if (response.status_code >= 300 && response.status_code < 400) {
         auto location_it = res.find(http::field::location);
         if (location_it != res.end()) {
-            std::string location = location_it->value();
-            response.error_message = "Redirect to: " + location;
-            // In a real implementation, you might want to follow redirects
+            response.redirect_location = location_it->value();
         }
     }
     
@@ -163,10 +243,6 @@ HttpResponse HttpClient::executeRequest(Stream& stream, const UrlParts& url_part
     } else {
         stream.shutdown(tcp::socket::shutdown_both, ec);
     }
-    
-    if (ec && ec != beast::errc::not_connected) {
-        // Connection close error can be ignored
-    }
-    
+        
     return response;
 }
